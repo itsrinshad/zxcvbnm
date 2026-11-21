@@ -1,0 +1,23 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # The Supabase URL and ANON (public) key are MEANT to be inside the browser bundle.
+  # Netlify's secret scanner flags them as "privacy risk"; tell it these two are fine.
+  # NEVER put the service_role key in a VITE_ variable.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
